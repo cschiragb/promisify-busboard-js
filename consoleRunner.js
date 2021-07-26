@@ -139,13 +139,23 @@ export default class ConsoleRunner {
     //     });
     // }
 
-    run() {
+    // run() {
+    //     const that = this;
+    //     that.promptForPostcode()
+    //         .then((postcode) => postcode.replace(/\s/g, ''))
+    //         .then((cleanedPostcode) => that.getLocationForPostCode(cleanedPostcode))
+    //         .then((location) => that.getNearestStopPoints(location.latitude, location.longitude, 5))
+    //         .then((stopPoints) => that.displayStopPoints(stopPoints))
+    //         .catch((error) => console.log(error));
+    // }
+
+    /* Using async and await rather than .then */
+    async run() {
         const that = this;
-        that.promptForPostcode()
-            .then((postcode) => postcode.replace(/\s/g, ''))
-            .then((cleanedPostcode) => that.getLocationForPostCode(cleanedPostcode))
-            .then((location) => that.getNearestStopPoints(location.latitude, location.longitude, 5))
-            .then((stopPoints) => that.displayStopPoints(stopPoints))
-            .catch((error) => console.log(error));
+        const postcode = await that.promptForPostcode();
+        const cleanedPostcode = postcode.replace(/\s/g, '');
+        const location = await that.getLocationForPostCode(cleanedPostcode);
+        const stopPoints = await that.getNearestStopPoints(location.latitude, location.longitude, 5);
+        this.displayStopPoints(stopPoints);     
     }
 }
